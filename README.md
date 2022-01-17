@@ -17,6 +17,7 @@ A <i>really</i> simple billing script. I made this originally to combat hackers 
 - <a href='https://github.com/Leah-UK/bixbi_core'>bixbi_core</a>
 - <a href='https://github.com/overextended/oxmysql'>oxmysql</a>
 - <a href='https://github.com/zf-development/zf_dialog'>zf_dialog</a>
+- <a href='https://github.com/zf-development/zf_context'>zf_context</a>
 
 ---
 
