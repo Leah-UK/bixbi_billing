@@ -28,7 +28,7 @@ end)
 AddEventHandler('bixbi_billing:PayBillCheck', function(data)
     exports['zf_context']:openMenu({
         { id = 1, header = 'Pay Bill', txt = ' ',
-            params = { event = 'bixbi_billing:PayBillConf', args = { id = data.id, job = data.senderJob, amount = data.amount } }
+            params = { event = 'bixbi_billing:PayBillConf', args = { id = data.id, job = data.job, amount = data.amount } }
         },
         { 
             id = 2, header = 'Cancel', txt = ' ', params = { event = 'bixbi_billing:BillingMenu' }
