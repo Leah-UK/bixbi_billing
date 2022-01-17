@@ -5,7 +5,9 @@
 
 <h2 align='center'>Information</h2>
 
-A <i>really</i> simple billing script. I made this originally to combat hackers spamming our players with bills. <a href='https://youtu.be/gTbI0aiX9mw'>Demonstration Video.</a>
+A <i>really</i> simple billing script. I made this originally to combat hackers spamming our players with bills.
+
+<h3 align='center'><b><a href='https://youtu.be/gTbI0aiX9mw'>Demonstration Video</a></b></h3>
 
 ---
 
