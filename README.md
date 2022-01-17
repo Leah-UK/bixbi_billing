@@ -13,6 +13,8 @@
 
 - <a href='https://github.com/overextended/es_extended'>"Ox" ESX</a>,<i> You can modify for other frameworks. <b>Please make a PR if you do</b></i>
 - <a href='https://github.com/Leah-UK/bixbi_core'>bixbi_core</a>
+- <a href='https://github.com/overextended/oxmysql'>oxmysql</a>
+- <a href='https://github.com/zf-development/zf_dialog'>zf_dialog</a>
 
 ---
 

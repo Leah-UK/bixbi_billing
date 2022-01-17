@@ -96,19 +96,14 @@ AddEventHandler('bixbi_billing:payBill', function(id, job, amount, playerId)
     local xPlayer = ESX.GetPlayerFromId(source)
     local accountInfo = xPlayer.getAccount('bank')
 
-    -- if (accountInfo.money >= amount) then
-        TriggerEvent('esx_addonaccount:getSharedAccount', 'society_' .. job, function(account)
-            if (account ~= nil) then
-                account.addMoney(amount)
-            end
-        end)
-        xPlayer.removeAccountMoney('bank', amount)
-        exports.oxmysql:execute('DELETE FROM bixbi_billing WHERE id = @id', { ['@id'] = id } )
-        xPlayer.triggerEvent('bixbi_core:Notify', 'success', 'You have paid a bill of $' .. amount, 10000)
-    -- else
-    --     TriggerEvent('bixbi_dispatch:Add', 0, 'police', 'bill', xTarget.name .. ' has failed to pay their bill.')
-    --     xPlayer.triggerEvent('bixbi_core:Notify', 'error', 'You didn\'t have enough money to pay your bill. The Police have been informed.', 10000)
-    -- end
+    TriggerEvent('esx_addonaccount:getSharedAccount', 'society_' .. job, function(account)
+        if (account ~= nil) then
+            account.addMoney(amount)
+        end
+    end)
+    xPlayer.removeAccountMoney('bank', amount)
+    exports.oxmysql:execute('DELETE FROM bixbi_billing WHERE id = @id', { ['@id'] = id } )
+    xPlayer.triggerEvent('bixbi_core:Notify', 'success', 'You have paid a bill of $' .. amount, 10000)
 end)
 
 ESX.RegisterServerCallback('bixbi_billing:PlayerLookup', function(source, cb, firstname, lastname)

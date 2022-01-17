@@ -1,6 +1,6 @@
 Config = {}
 
-Config.Debug = true
+Config.Debug = false
 Config.Time =  60 * 60000 -- How long after getting a Fine/Bill you automatically pay it.
 Config.AllowedJobs = {
     police = { maxBill = 10000 },
