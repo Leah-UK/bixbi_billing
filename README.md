@@ -5,7 +5,7 @@
 
 <h2 align='center'>Information</h2>
 
-A <i>really</i> simple billing script. I made this originally to combat hackers spamming our players with bills.
+A really simple billing script. I made this originally to combat hackers spamming our players with bills. Only players of a certain job can send bills, and to a max amount (defined in config). The system has been integrated with qtarget, so you can fine someone by targetting them and selecting the fine option. There’s also a menu to search up other players bills - useful for Police to see if someone has too many bills.
 
 <h3 align='center'><b><a href='https://youtu.be/gTbI0aiX9mw'>Demonstration Video</a></b></h3>
 
