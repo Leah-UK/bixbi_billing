@@ -7,3 +7,4 @@ Config.AllowedJobs = { -- Add jobs that are able to give bills.
     ambulance = { maxBill = 10000 },
     mechanic = { maxBill = 10000 }
 } -- To give them qtarget capabilities you must edit SetupTargets() in client.lua.
+Config.Keybind = nil    -- Set to 'k' for example.

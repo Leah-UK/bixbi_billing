@@ -142,6 +142,11 @@ AddEventHandler('bixbi_billing:Bill', function(data)
     end
 end)
 
+if (Config.Keybind ~= nil) then RegisterKeyMapping('billingmenu', 'Billing Menu', 'keyboard', Config.Keybind) end
+RegisterCommand('billingmenu', function()
+    TriggerEvent('bixbi_billing:BillingMenu')
+end, false)
+
 --[[--------------------------------------------------
 Setup
 --]]--------------------------------------------------
