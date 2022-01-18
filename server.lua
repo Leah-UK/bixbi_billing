@@ -13,7 +13,7 @@ end, true, {help = 'Send player a bill. Used for dev.', validate = false, argume
 AddEventHandler('esx:playerLoaded', function(source, xPlayer)
     local currentTime = os.time()
     Citizen.Wait(10000)
-	exports.oxmysql:fetch('SELECT * FROM bixbi_billing WHERE target = ?', { xPlayer.identifier }, 
+	exports.oxmysql.query('SELECT * FROM bixbi_billing WHERE target = ?', { xPlayer.identifier }, 
 	function(result)
 		local bills = {}
         for i=1, #result, 1 do
@@ -27,7 +27,7 @@ end)
 ESX.RegisterServerCallback('bixbi_billing:getBills', function(source, cb)
     local xPlayer = ESX.GetPlayerFromId(source)
 
-	exports.oxmysql:fetch('SELECT * FROM bixbi_billing WHERE target = ?', { xPlayer.identifier },
+	exports.oxmysql.query('SELECT * FROM bixbi_billing WHERE target = ?', { xPlayer.identifier },
     function(result)
         local bills = {}
         for i=1, #result, 1 do
@@ -69,7 +69,7 @@ AddEventHandler('bixbi_billing:sendBill', function(targetId, reason, amount, pla
     
     TriggerEvent('esx_addonaccount:getSharedAccount', 'society_' .. xTarget.job.name, function(account)
         if (account == nil or account.money < amount) then
-            exports.oxmysql:insert('INSERT INTO bixbi_billing (sender, senderJob, reason, target, amount, time) VALUES (?, ?, ?, ?, ?, ?)', {
+            exports.oxmysql.insert('INSERT INTO bixbi_billing (sender, senderJob, reason, target, amount, time) VALUES (?, ?, ?, ?, ?, ?)', {
                 xPlayer.identifier, xPlayer.job.name, reason, xTarget.identifier, amount, os.time()
             },
             function(rowid)
@@ -102,7 +102,7 @@ AddEventHandler('bixbi_billing:payBill', function(id, job, amount, playerId)
         end
     end)
     xPlayer.removeAccountMoney('bank', amount)
-    exports.oxmysql:execute('DELETE FROM bixbi_billing WHERE id = @id', { ['@id'] = id } )
+    exports.oxmysql.execute('DELETE FROM bixbi_billing WHERE id = @id', { ['@id'] = id } )
     xPlayer.triggerEvent('bixbi_core:Notify', 'success', 'You have paid a bill of $' .. amount, 10000)
 end)
 
@@ -110,12 +110,12 @@ ESX.RegisterServerCallback('bixbi_billing:PlayerLookup', function(source, cb, fi
     local xPlayer = ESX.GetPlayerFromId(source)
     if (xPlayer.job.name ~= 'police') then return end
 
-    exports.oxmysql:fetch('SELECT identifier FROM users WHERE firstname = ? and lastname = ?', { firstname, lastname, }, 
+    exports.oxmysql.query('SELECT identifier FROM users WHERE firstname = ? and lastname = ?', { firstname, lastname, }, 
     function(result)
         for _,v in pairs(result) do
             local identifier = v.identifier
             if (identifier ~= nil) then
-                exports.oxmysql:fetch('SELECT * FROM bixbi_billing WHERE target = @target', {
+                exports.oxmysql.query('SELECT * FROM bixbi_billing WHERE target = @target', {
                     ['@target'] = identifier
                 },
                 function(result)
