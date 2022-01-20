@@ -67,24 +67,33 @@ AddEventHandler('bixbi_billing:sendBill', function(targetId, reason, amount, pla
         xPlayer.triggerEvent('bixbi_core:Notify', 'error', 'Fine exceeded max bill amount, bill has been reduced to the max (' .. amount .. ')')
     end
     
-    TriggerEvent('esx_addonaccount:getSharedAccount', 'society_' .. xTarget.job.name, function(account)
-        if (account == nil or account.money < amount) then
-            exports.oxmysql.insert('INSERT INTO bixbi_billing (sender, senderJob, reason, target, amount, time) VALUES (?, ?, ?, ?, ?, ?)', {
-                xPlayer.identifier, xPlayer.job.name, reason, xTarget.identifier, amount, os.time()
-            },
-            function(rowid)
-                xTarget.triggerEvent('bixbi_core:Notify', 'error', 'You have received a bill from ' .. xPlayer.name .. ' with the value of $' .. amount, 10000)
-            end)
-        else
-            account.removeMoney(amount)
-            TriggerEvent('esx_addonaccount:getSharedAccount', 'society_' .. xPlayer.job.name, function(sourceaccount)
-                if (sourceaccount ~= nil) then
-                    sourceaccount.addMoney(amount)
-                    xTarget.triggerEvent('bixbi_core:Notify', 'error', 'Your society has paid a bill of $' .. amount, 10000)
-                end
-            end)
-        end
-    end)
+    if (Config.DisableSocietyPayouts) then
+        exports.oxmysql.insert('INSERT INTO bixbi_billing (sender, senderJob, reason, target, amount, time) VALUES (?, ?, ?, ?, ?, ?)', {
+            xPlayer.identifier, xPlayer.job.name, reason, xTarget.identifier, amount, os.time()
+        },
+        function(rowid)
+            xTarget.triggerEvent('bixbi_core:Notify', 'error', 'You have received a bill from ' .. xPlayer.name .. ' with the value of $' .. amount, 10000)
+        end)
+    else
+        TriggerEvent('esx_addonaccount:getSharedAccount', 'society_' .. xTarget.job.name, function(account)
+            if (account == nil or account.money < amount) then
+                exports.oxmysql.insert('INSERT INTO bixbi_billing (sender, senderJob, reason, target, amount, time) VALUES (?, ?, ?, ?, ?, ?)', {
+                    xPlayer.identifier, xPlayer.job.name, reason, xTarget.identifier, amount, os.time()
+                },
+                function(rowid)
+                    xTarget.triggerEvent('bixbi_core:Notify', 'error', 'You have received a bill from ' .. xPlayer.name .. ' with the value of $' .. amount, 10000)
+                end)
+            else
+                account.removeMoney(amount)
+                TriggerEvent('esx_addonaccount:getSharedAccount', 'society_' .. xPlayer.job.name, function(sourceaccount)
+                    if (sourceaccount ~= nil) then
+                        sourceaccount.addMoney(amount)
+                        xTarget.triggerEvent('bixbi_core:Notify', 'error', 'Your society has paid a bill of $' .. amount, 10000)
+                    end
+                end)
+            end
+        end)
+    end
 
     xPlayer.triggerEvent('bixbi_core:Notify', 'success', 'You have sent a bill of $' .. amount .. ' to ' .. xTarget.name, 10000)
     onTimer[xPlayer.playerId] = GetGameTimer() + (10 * 1000)
