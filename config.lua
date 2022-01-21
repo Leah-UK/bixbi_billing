@@ -1,6 +1,6 @@
 Config = {}
 
-Config.Debug = false
+Config.Debug = false -- Allows live-restarting of the script.
 Config.Time =  60 * 60000 -- How long after getting a Fine/Bill you automatically pay it.
 Config.AllowedJobs = { -- Add jobs that are able to give bills.
     police = { maxBill = 10000 },
