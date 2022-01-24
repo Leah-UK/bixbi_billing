@@ -11,13 +11,14 @@ end, true, {help = 'Send player a bill. Used for dev.', validate = false, argume
 }})
 
 AddEventHandler('esx:playerLoaded', function(source, xPlayer)
+    if (Config.Days == -1) then return end
     local currentTime = os.time()
     Citizen.Wait(10000)
 	exports.oxmysql.query('SELECT * FROM bixbi_billing WHERE target = ?', { xPlayer.identifier }, 
 	function(result)
 		local bills = {}
         for i=1, #result, 1 do
-            if ((os.difftime(tonumber(result[i].time), currentTime) * -1) > 604800) then
+            if ((os.difftime(tonumber(result[i].time), currentTime) * -1) > (Config.Days * 86400)) then
                 TriggerEvent('bixbi_billing:payBill', result[i].id, result[i].senderjob, result[i].amount, source)
             end
         end
