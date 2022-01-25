@@ -11,3 +11,5 @@ Config.Command = 'billingmenu'
 Config.DisableSocietyPayouts = false -- Set to true if you don't want to bill a persons job.
 Config.Days = 7 -- How many days (IRL) you have to pay for the bills before they're automatically paid off.
                 -- Set to -1 to disable.
+
+-- Remember to edit the qtarget settings in client.lua and the SetupTargets() function.
