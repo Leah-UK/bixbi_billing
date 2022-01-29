@@ -14,7 +14,7 @@ AddEventHandler('esx:playerLoaded', function(source, xPlayer)
     if (Config.Days == -1) then return end
     local currentTime = os.time()
     Citizen.Wait(10000)
-	exports.oxmysql.query('SELECT * FROM bixbi_billing WHERE target = ?', { xPlayer.identifier }, 
+	MySQL.query('SELECT * FROM bixbi_billing WHERE target = ?', { xPlayer.identifier }, 
 	function(result)
 		local bills = {}
         for i=1, #result, 1 do
@@ -28,7 +28,7 @@ end)
 ESX.RegisterServerCallback('bixbi_billing:getBills', function(source, cb)
     local xPlayer = ESX.GetPlayerFromId(source)
 
-	exports.oxmysql.query('SELECT * FROM bixbi_billing WHERE target = ?', { xPlayer.identifier },
+	MySQL.query('SELECT * FROM bixbi_billing WHERE target = ?', { xPlayer.identifier },
     function(result)
         local bills = {}
         for i=1, #result, 1 do
@@ -69,7 +69,7 @@ AddEventHandler('bixbi_billing:sendBill', function(targetId, reason, amount, pla
     end
     
     if (Config.DisableSocietyPayouts) then
-        exports.oxmysql.insert('INSERT INTO bixbi_billing (sender, senderJob, reason, target, amount, time) VALUES (?, ?, ?, ?, ?, ?)', {
+        MySQL.insert('INSERT INTO bixbi_billing (sender, senderJob, reason, target, amount, time) VALUES (?, ?, ?, ?, ?, ?)', {
             xPlayer.identifier, xPlayer.job.name, reason, xTarget.identifier, amount, os.time()
         },
         function(rowid)
@@ -78,7 +78,7 @@ AddEventHandler('bixbi_billing:sendBill', function(targetId, reason, amount, pla
     else
         TriggerEvent('esx_addonaccount:getSharedAccount', 'society_' .. xTarget.job.name, function(account)
             if (account == nil or account.money < amount) then
-                exports.oxmysql.insert('INSERT INTO bixbi_billing (sender, senderJob, reason, target, amount, time) VALUES (?, ?, ?, ?, ?, ?)', {
+                MySQL.insert('INSERT INTO bixbi_billing (sender, senderJob, reason, target, amount, time) VALUES (?, ?, ?, ?, ?, ?)', {
                     xPlayer.identifier, xPlayer.job.name, reason, xTarget.identifier, amount, os.time()
                 },
                 function(rowid)
@@ -112,7 +112,7 @@ AddEventHandler('bixbi_billing:payBill', function(id, job, amount, playerId)
         end
     end)
     xPlayer.removeAccountMoney('bank', amount)
-    exports.oxmysql.execute('DELETE FROM bixbi_billing WHERE id = @id', { ['@id'] = id } )
+    MySQL.execute('DELETE FROM bixbi_billing WHERE id = @id', { ['@id'] = id } )
     xPlayer.triggerEvent('bixbi_core:Notify', 'success', 'You have paid a bill of $' .. amount, 10000)
 end)
 
@@ -120,12 +120,12 @@ ESX.RegisterServerCallback('bixbi_billing:PlayerLookup', function(source, cb, fi
     local xPlayer = ESX.GetPlayerFromId(source)
     if (xPlayer.job.name ~= 'police') then return end
 
-    exports.oxmysql.query('SELECT identifier FROM users WHERE firstname = ? and lastname = ?', { firstname, lastname, }, 
+    MySQL.query('SELECT identifier FROM users WHERE firstname = ? and lastname = ?', { firstname, lastname, }, 
     function(result)
         for _,v in pairs(result) do
             local identifier = v.identifier
             if (identifier ~= nil) then
-                exports.oxmysql.query('SELECT * FROM bixbi_billing WHERE target = @target', {
+                MySQL.query('SELECT * FROM bixbi_billing WHERE target = @target', {
                     ['@target'] = identifier
                 },
                 function(result)
