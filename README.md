@@ -13,7 +13,6 @@ A really simple billing script. I made this originally to combat hackers spammin
 
 <h2 align='center'>Requirements</h2>
 
-- <a href='https://github.com/overextended/es_extended'>"Ox" ESX</a>,<i> You can modify for other frameworks. <b>Please make a PR if you do</b></i>
 - <a href='https://github.com/overextended/ox_lib'>ox_lib</a>
 - <a href='https://github.com/overextended/oxmysql'>oxmysql</a>
 
