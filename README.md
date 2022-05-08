@@ -1,4 +1,4 @@
-<h1 align='center'><a href='https://discord.link/bixbi'>Discord</a></h1>
+<h1 align='center'><a href=''>Discord</a></h1>
 <p align='center'><a href='https://forum.cfx.re/u/Leah_UK/summary'>FiveM Profile</a> | <a href='https://ko-fi.com/bixbi'>Support Me Here</a><br></p>
 
 ---
@@ -14,10 +14,8 @@ A really simple billing script. I made this originally to combat hackers spammin
 <h2 align='center'>Requirements</h2>
 
 - <a href='https://github.com/overextended/es_extended'>"Ox" ESX</a>,<i> You can modify for other frameworks. <b>Please make a PR if you do</b></i>
-- <a href='https://github.com/Leah-UK/bixbi_core'>bixbi_core</a>
+- <a href='https://github.com/overextended/ox_lib'>ox_lib</a>
 - <a href='https://github.com/overextended/oxmysql'>oxmysql</a>
-- <a href='https://github.com/zf-development/zf_dialog'>zf_dialog</a>
-- <a href='https://github.com/zf-development/zf_context'>zf_context</a>
 
 ---
 

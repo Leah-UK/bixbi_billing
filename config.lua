@@ -1,15 +1,35 @@
-Config = {}
+Config = {
+    Debug = true,
+    Framework = 'ESX',      -- ESX, QBCore, Ox
+    AllowedJobs = {         -- Add jobs that are able to give bills.
+        police = { maxBill = 10000 },
+        ambulance = { maxBill = 10000 },
+        mechanic = { maxBill = 10000 }
+    },
+    Keybind = nil,          -- nil to disable. Example: 'k'
+    Command = 'billingmenu',-- nil to disable.
+    Days = 7                -- How many days (IRL) you have to pay for the bills before they're automatically paid off.
+                            -- Set to -1 to disable.
+}
 
-Config.Debug = false -- Allows live-restarting of the script.
-Config.AllowedJobs = { -- Add jobs that are able to give bills.
-    police = { maxBill = 10000 },
-    ambulance = { maxBill = 10000 },
-    mechanic = { maxBill = 10000 }
-} -- To give them qtarget capabilities you must edit SetupTargets() in client.lua.
-Config.Keybind = nil    -- Set to 'k' for example.
-Config.Command = 'billingmenu'
-Config.DisableSocietyPayouts = false -- Set to true if you don't want to bill a persons job.
-Config.Days = 7 -- How many days (IRL) you have to pay for the bills before they're automatically paid off.
-                -- Set to -1 to disable.
+Config.Target = {           -- Set to nil to disable (replace the entire {} block).
+    type = 'qtarget',
+    police = {['police'] = 0}, -- https://overextended.github.io/qtarget/usage
+    jobs = {['police'] = 0, ['ambulance'] = 0, ['mechanic'] = 0}
+}
 
--- Remember to edit the qtarget settings in client.lua and the SetupTargets() function.
+-- Config.Society = {          -- Set to nil to disable (replace the entire {} block).
+--     MinimumValue = 0,       -- The lowest amount that the account can have.
+--     MaximumValue = -1,      -- The maximum amount  that an account can have. -1 to disable.
+--     Societies = {
+--         ['police'] = {
+--             enabled = true,
+--             jobs = { 'police', 'fbi' }
+--         },
+--         ['emergency'] = {
+--             enabled = false,
+--             jobs = { 'police', 'fbi', 'ems' }
+--         }
+--     }
+    
+-- }
