@@ -4,7 +4,9 @@
 # Information
 [**Bixbi_Billing**](https://forum.cfx.re/t/free-bixbi-billing/4803834) is a *simple* billing script. Intended to be used on FiveM Roleplaying Servers.
 
-Originally created to combat hackers/script-kiddies that found it fun to send random, usually racist, bills to everyone on the server. Using this script you can limit bills being sent to a specific job, you can further limit the amount amount that a bill can be. ***Optionally*** you're able to enable the use of target scripts (*such as qtarget*). Furthermore, you have the ability to open a "search for bill" menu, where a job (*such as the police*) can search a players bills using their First and Last **RP** name.
+Originally created to combat hackers/script-kiddies that found it fun to send random, usually racist, bills to everyone on the server. Using this script you can limit bills being sent to a specific job, you can further limit the amount amount that a bill can be.
+
+***Optionally*** you're able to enable the use of target scripts (*such as qtarget*). Furthermore, you have the ability to open a "search for bill" menu, where a job (*such as the police*) can search a players bills using their First and Last **RP** name.
 
 ### [Demonstration Video](https://youtu.be/gTbI0aiX9mw)
 
