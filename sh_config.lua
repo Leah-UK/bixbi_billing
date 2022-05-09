@@ -14,7 +14,7 @@ Config = {
 }
 
 Config.Target = {           -- Set to nil to disable (replace the entire {} block).
-    type = 'qtarget',       -- qtarget, qbcore
+    type = 'qtarget',       -- qtarget, qbtarget
     police = {['police'] = 0}, -- https://overextended.github.io/qtarget/usage
     jobs = {['police'] = 0, ['ambulance'] = 0, ['mechanic'] = 0}
 }
