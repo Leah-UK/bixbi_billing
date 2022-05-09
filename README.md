@@ -1,28 +1,52 @@
-<p align='center'><a href='https://forum.cfx.re/u/Leah_UK/summary'>FiveM Profile</a> | <a href='https://ko-fi.com/bixbi'>Support Me Here</a><br></p>
+### <p align='center'>[Organisation](https://github.com/Bixbi-FiveM) | [Support Me Here](https://ko-fi.com/bixbi) | [FiveM Profile](https://forum.cfx.re/u/Leah_UK/summary)</p>
+------
+
+# Information
+
+[**Bixbi_Billing**](https://forum.cfx.re/t/free-bixbi-billing/4803834) is a *simple* billing script. Intended to be used on FiveM Roleplaying Servers.
+
+Originally created to combat hackers/script-kiddies that found it fun to send random, usually racist, bills to everyone on the server. Using this script you can limit bills being sent to a specific job, you can further limit the amount amount that a bill can be. ***Optionally*** you're able to enable the use of target scripts (*such as qtarget*). Furthermore, you have the ability to open a "search for bill" menu, where a job (*such as the police*) can search a players bills using their First and Last **RP** name.
+
+### [Demonstration Video](https://youtu.be/gTbI0aiX9mw)
 
 ---
 
-<h2 align='center'>Information</h2>
+# Requirements
 
-A really simple billing script. I made this originally to combat hackers spamming our players with bills. Only players of a certain job can send bills, and to a max amount (defined in config). The system has been integrated with qtarget, so you can fine someone by targetting them and selecting the fine option. There’s also a menu to search up other players bills - useful for Police to see if someone has too many bills.
-
-<h3 align='center'><b><a href='https://youtu.be/gTbI0aiX9mw'>Demonstration Video</a></b></h3>
-
----
-
-<h2 align='center'>Requirements</h2>
-
-- <a href='https://github.com/overextended/ox_lib'>ox_lib</a>
-- <a href='https://github.com/overextended/oxmysql'>oxmysql</a>
+- [ox_lib](https://github.com/overextended/ox_lib)
+- [oxmysql](https://github.com/overextended/oxmysql)
 
 ---
 
-<h2 align='center'>Exports</h2>
+# Exports
 
-<b>Open Menu Client:</b> <code>TriggerEvent('bixbi_billing:BillingMenu')</code>
+## Client
 
-<b>Open Lookup Menu Client:</b> <code>TriggerEvent('bixbi_billing:BillingLookup')</code>
+#### Open Menu
+```lua
+TriggerEvent('bixbi_billing:OpenMenu') -- sent from client
+TriggerClientEvent('bixbi_billing:OpenMenu', source) -- sent from server
+```
+#### Open Lookup Menu
+```lua
+TriggerEvent('bixbi_billing:OpenLookupMenu') -- sent from client
+TriggerClientEvent('bixbi_billing:OpenLookupMenu', source) -- sent from server
+```
+
+## Server
+
+#### Send Bill
+```lua
+local data = {
+  targetId = id, -- int
+  reason = "string", -- string
+  amount = 100, -- int
+  playerId = nil -- int, only required when event is sent from *server*. If sent from client this is automatic.
+}
+
+TriggerServerEvent('bixbi_billing:SendBill', data) -- sent from client
+TriggerEvent('bixbi_billing:SendBill, data) -- sent from server
+```
 
 ---
-
-<p align='center'><i>Feel free to modify to your liking. Please keep my name <b>(Leah#0001)</b> in the credits of the fxmanifest. <b>If your modification is a bug-fix I ask that you make a pull request, this is a free script; please contribute when you can.</b></i></p>
+<p align='center'>Feel free to modify to your liking. Please keep my name <b>(Leah#0001)</b> in the credits of the fxmanifest. <i>If your modification is a bug-fix I ask that you make a pull request, this is a free script; please contribute when you can.</i></p>
