@@ -5,10 +5,6 @@ RegisterCommand(Config.Command, function()
     Menu:Open()
 end, false)
 
-RegisterCommand('billtest', function()
-    TriggerServerEvent('bixbi_billing:SendBill', {targetId = 1, reason = 'Test ' .. tostring(math.random(1,100)), amount = 500})
-end, false)
-
 function Menu:Open()
     self.bills = lib.callback.await('bixbi_billing:GetBills')
     if (not self.bills or #self.bills == 0) then
@@ -88,3 +84,5 @@ function Menu:BillLookup()
     b.RegisterContext(cMenu)
     b.ShowContext('bixbi_billing_lookup_menu')
 end
+function OpenLookupMenu() Menu:BillLookup() end
+RegisterNetEvent('bixbi_billing:OpenLookupMenu', OpenLookupMenu)

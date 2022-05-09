@@ -18,7 +18,7 @@ AddEventHandler('onResourceStart', function(resourceName)
                 if (type(latestVersion) == 'string') then
                     if (currentVersion ~= latestVersion) then print(outdated:format(latestVersion, currentVersion)) end
                 else
-                    if (currentVersion < latestVersion) then print(outdated:format(latestVersion, currentVersion)) end
+                    if (tonumber(currentVersion) < latestVersion) then print(outdated:format(latestVersion, currentVersion)) end
                 end
             end
         end)

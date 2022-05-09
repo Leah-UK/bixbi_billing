@@ -1,25 +1,3 @@
-b = { Framework = nil }
-
-function b:GetPlayerFromId(id)
-    if (Config.Framework == "ESX") then
-        return self['Framework'].GetPlayerFromId(id)
-    end
-end
-
-function b.RemoveAccountMoney(player, amount)
-    if (Config.Framework == "ESX") then
-        player.removeAccountMoney('bank', amount)
-        return true
-    end
-    return false
-end
-
-function b.GetJob(player)
-    if (Config.Framework == "ESX") then
-        return player.job.name
-    end
-end
-
 AddEventHandler('onResourceStart', function(resourceName)
     if (resourceName ~= GetCurrentResourceName()) then return end
     b:GetFramework()
@@ -27,31 +5,57 @@ AddEventHandler('onResourceStart', function(resourceName)
     b:FrameworkEventHandlers()
 end)
 
-function b:GetFramework()
-    if (self.Framework) then return end
-    if (Config.Framework == "ESX") then
-        self.PlayerLoaded = 'esx:playerLoaded'
-        TriggerEvent("esx:getSharedObject", function(obj) self.Framework = obj end)
+local onTimer = {}
+RegisterServerEvent('bixbi_billing:PayBill')
+AddEventHandler('bixbi_billing:PayBill', function(data) -- id, job, amount, playerId
+    if (type(data) ~= 'table') then return end
+    if ((not source or source == '') and data.playerId) then source = data.playerId end
+    
+    local player = b:GetPlayerFromId(source)
+    local result = b.RemoveAccountMoney(player, data.amount)
+    if (not result) then
+        print('There was an issue with removing money from your account. Please inform the staff team.')
+        return
     end
-end
 
-function b:FrameworkEventHandlers()
-    while (self['Framework'] == nil) do Citizen.Wait(100) end
+    MySQL.update('DELETE FROM bixbi_billing WHERE id = ?', { data.id })
+    TriggerClientEvent('bixbi_billing:Notify', source, 'Bill Paid', 'You have paid a bill of $' .. data.amount, 'success')
+end)
 
-    AddEventHandler(self['PlayerLoaded'], function(source, Player)
-        if (Config.Days == -1) then return end
-        local currentTime = os.time()
-        Citizen.Wait(10000)
 
-        local result = MySQL.query.await('SELECT * FROM bixbi_billing WHERE target = ?', { Player.identifier })
-        if (not result) then return end
+RegisterServerEvent('bixbi_billing:SendBill')
+AddEventHandler('bixbi_billing:SendBill', function(data) -- targetId, reason, amount, playerId
+    if (type(data) ~= 'table') then return end
+    if ((not source or source == '') and data.playerId) then source = data.playerId end
 
-        local bills = {}
-        for _,v in pairs(result) do
-            if ((os.difftime(tonumber(v.time), currentTime) * -1) > (Config.Days * 86400)) then
-                TriggerEvent('bixbi_billing:PayBill', {id = v.id, job = v.senderjob, amount = v.amount, playerId = source})
-            end
-        end
+    local player, target = b:GetPlayerFromId(source), b:GetPlayerFromId(data.targetId)
+    -- local target = b:GetPlayerFromId(data.targetId)
+
+    if onTimer[player.playerId] and onTimer[player.playerId] > GetGameTimer() then
+        local timeLeft = (onTimer[player.playerId] - GetGameTimer()) / 1000
+        TriggerClientEvent('bixbi_billing:Notify', source, 'Send Bill', 'Please wait ' .. tostring(timeLeft) .. ' seconds before sending another bill', 'error')
+        return
+    end
+
+    local playerJob = b.GetJob(player)
+    local playerIdentifier = b.GetIdentifier(player)
+    if (Config.AllowedJobs[playerJob] == nil) then
+        print(playerIdentifier .. ' (' .. player.playerId .. ') has tried to send a bill.')
+        TriggerClientEvent('bixbi_billing:Notify', source, 'Send Bill', 'You are unable to do this', 'error')
+        return
+    end
+
+    if (data.amount > Config.AllowedJobs[playerJob].maxBill) then 
+        data.amount = Config.AllowedJobs[playerJob].maxBill
+        TriggerClientEvent('bixbi_billing:Notify', source, 'Send Bill', 'Fine exceeded max bill amount, bill has been reduced to the max (' .. data.amount .. ')', 'error')
+    end
+    
+    MySQL.insert('INSERT INTO bixbi_billing (sender, senderJob, reason, target, amount, time) VALUES (?, ?, ?, ?, ?, ?)', {
+        playerIdentifier, playerJob, data.reason, target.identifier, data.amount, os.time() },
+    function(rowid)
+        TriggerClientEvent('bixbi_billing:Notify', data.targetId, 'Bill', 'You have received a bill from ' .. player.name .. ' with the value of $' .. data.amount, 'error')
     end)
-end
 
+    TriggerClientEvent('bixbi_billing:Notify', source, 'Send Bill', 'You have sent a bill of $' .. data.amount .. ' to ' .. target.name, 'success')
+    onTimer[player.playerId] = GetGameTimer() + (10 * 1000)
+end)

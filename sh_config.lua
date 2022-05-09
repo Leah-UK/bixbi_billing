@@ -8,12 +8,13 @@ Config = {
     },
     Keybind = nil,          -- nil to disable. Example: 'k'
     Command = 'billingmenu',-- nil to disable.
-    Days = 7                -- How many days (IRL) you have to pay for the bills before they're automatically paid off.
+    Days = 7,               -- How many days (IRL) you have to pay for the bills before they're automatically paid off.
                             -- Set to -1 to disable.
+    WithdrawAccount = 'bank'-- Account to withdraw the money from.
 }
 
 Config.Target = {           -- Set to nil to disable (replace the entire {} block).
-    type = 'qtarget',
+    type = 'qtarget',       -- qtarget, qbcore
     police = {['police'] = 0}, -- https://overextended.github.io/qtarget/usage
     jobs = {['police'] = 0, ['ambulance'] = 0, ['mechanic'] = 0}
 }

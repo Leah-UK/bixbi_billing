@@ -1,15 +1,16 @@
 Target = {}
 function Target.Setup()
-    print('here')
     if (not Config.Target) then return end
+    Config.Target.type = Config.Target.type:upper()
 
-    if (Config.Target.type == 'qtarget') then
+    if (Config.Target.type == 'QTARGET') then
         Target.qTargetSetup()
+    elseif (Config.Target.type == 'QBTARGET') then
+        Target.qbTargetSetup()
     end
 end
 
 function Target.qTargetSetup()
-    print('here2')
     exports['qtarget']:Vehicle({
         options = {
             {
@@ -23,6 +24,32 @@ function Target.qTargetSetup()
     })
 
     exports['qtarget']:Player({
+        options = {
+            {
+                event = "bixbi_billing:Bill",
+                icon = "fas fa-file-invoice-dollar",
+                label = "Bill",
+                job = Config.Target.jobs
+            }
+        },
+        distance = 2.0
+    })
+end
+
+function Target.qbTargetSetup()
+    exports['qb-target']:AddGlobalVehicle({
+        options = {
+            {
+                event = "bixbi_billing:FineDriver",
+                icon = "fas fa-file-invoice-dollar",
+                label = "Fine Driver",
+                job = Config.Target.police
+            },
+        },
+        distance = 2.0
+    })
+
+    exports['qb-target']:AddGlobalPed({
         options = {
             {
                 event = "bixbi_billing:Bill",
