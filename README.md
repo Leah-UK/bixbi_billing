@@ -35,14 +35,14 @@ TriggerClientEvent('bixbi_billing:OpenLookupMenu', source) -- sent from server
 #### Send Bill
 ```lua
 local data = {
-  targetId = id, -- int
+  targetId = 1, -- int
   reason = "string", -- string
   amount = 100, -- int
   playerId = nil -- int, only required when event is sent from *server*. If sent from client this is automatic.
 }
 
 TriggerServerEvent('bixbi_billing:SendBill', data) -- sent from client
-TriggerEvent('bixbi_billing:SendBill, data) -- sent from server
+TriggerEvent('bixbi_billing:SendBill', data) -- sent from server
 ```
 
 ---
