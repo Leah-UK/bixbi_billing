@@ -1,6 +1,8 @@
 b = { Framework = nil }
 function b:GetFramework()
     if (self.Framework) then return end
+    if (not Config.Framework or Config.Framework == '') then print("^3[bixbi_billing]^7 You must set your Framework in sh_config.lua") end
+
     Config.Framework = Config.Framework:upper() -- Makes framework checks use ALL CAPS. To remove case-sensitivity issues.
     if (Config.Framework == "ESX") then
         self.PlayerLoaded = 'esx:playerLoaded'
@@ -32,8 +34,7 @@ function b.PlayerLoadedFunc(source, player)
         -- Add in your framework related code here.
     end
 
-    local playerIdentifier = b.GetIdentifier(player)
-    local result = MySQL.query.await('SELECT * FROM bixbi_billing WHERE target = ?', { playerIdentifier })
+    local result = MySQL.query.await('SELECT * FROM bixbi_billing WHERE target = ?', { b.GetPlayerIdentifier(player) })
     if (not result) then return end
 
     local bills = {}
@@ -84,7 +85,7 @@ function b:GetPlayerIdentifier(player)
     if (Config.Framework == "ESX") then
         return player.identifier
     elseif (Config.Framework == "QBCORE") then
-        return self['Framework'].Functions.GetIdentifier(player.PlayerData.source)
+        return self['Framework'].Functions.GetIdentifier(player.PlayerData.source, 'license')
     else
         -- Add in your framework related code here.
     end
@@ -106,7 +107,7 @@ function b.GetPlayerName(player)
     if (Config.Framework == "ESX") then
         return player.name
     elseif (Config.Framework == "QBCORE") then
-        return player.PlayerData.charinfo.firstname + " " + player.PlayerData.charinfo.lastname
+        return player.PlayerData.charinfo.firstname .. " " .. player.PlayerData.charinfo.lastname
     else
         -- Add in your framework related code here.
     end

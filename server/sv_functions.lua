@@ -37,7 +37,7 @@ AddEventHandler('bixbi_billing:SendBill', function(data) -- targetId, reason, am
         return
     end
 
-    local playerJob, playerIdentifier = b.GetPlayerJob(player), b.GetPlayerIdentifier(player)
+    local playerJob, playerIdentifier = b.GetPlayerJob(player), b:GetPlayerIdentifier(player)
     
     if (Config.AllowedJobs[playerJob] == nil) then
         print(playerIdentifier .. ' (' .. source .. ') has tried to send a bill.')
@@ -51,7 +51,7 @@ AddEventHandler('bixbi_billing:SendBill', function(data) -- targetId, reason, am
     end
     
     MySQL.insert('INSERT INTO bixbi_billing (sender, senderJob, reason, target, amount, time) VALUES (?, ?, ?, ?, ?, ?)', {
-        playerIdentifier, playerJob, data.reason, b.GetPlayerIdentifier(target), data.amount, os.time() },
+        playerIdentifier, playerJob, data.reason, b:GetPlayerIdentifier(target), data.amount, os.time() },
     function(rowid)
         TriggerClientEvent('bixbi_billing:Notify', data.targetId, 'Bill', 'You have received a bill from ' .. b.GetPlayerName(player) .. ' with the value of $' .. data.amount, 'error')
     end)

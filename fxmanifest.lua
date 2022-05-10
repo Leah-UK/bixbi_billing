@@ -4,7 +4,7 @@ Creation Date:	27/08/2021
 fx_version 'cerulean'
 game 'gta5'
 author 'Leah#0001'
-version '2.01'
+version '2.02'
 versioncheck 'https://raw.githubusercontent.com/Bixbi-FiveM/bixbi_billing/main/fxmanifest.lua'
 lua54 'yes'
 

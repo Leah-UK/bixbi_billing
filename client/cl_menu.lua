@@ -63,7 +63,7 @@ function Menu:BillLookup()
     if (not input) then return end
 
     local firstName = input[1]
-    local targetBills = lib.callback.await('bixbi_billing:getBills', {firstname = firstName, lastname = input[2]})
+    local targetBills = lib.callback.await('bixbi_billing:PlayerLookup', false, {firstname = firstName, lastname = input[2]})
     if (not targetBills or #targetBills == 0) then
         b.Notify('Bills', 'No Bills Found.', 'error')
         return

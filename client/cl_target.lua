@@ -55,7 +55,10 @@ function Target.qbTargetSetup()
                 event = "bixbi_billing:Bill",
                 icon = "fas fa-file-invoice-dollar",
                 label = "Bill",
-                job = Config.Target.jobs
+                job = Config.Target.jobs,
+                canInteract = function(entity)
+                    return IsPedAPlayer(entity)
+                end
             }
         },
         distance = 2.0

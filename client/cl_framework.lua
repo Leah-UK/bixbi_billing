@@ -47,7 +47,7 @@ function b:PlayerLoadedFunc(player)
         if (player) then self['Framework'].PlayerData = player end
         self['Framework'].PlayerLoaded = true
     elseif (Config.Framework == "QBCORE") then
-        self['Framework'].PlayerData = QBCore.Functions.GetPlayerData()
+        self['Framework'].PlayerData = self['Framework'].Functions.GetPlayerData()
         self['Framework'].PlayerLoaded = true
     else
         -- Add in your framework related code here.

@@ -1,6 +1,6 @@
 Config = {
     Debug = false,
-    Framework = 'ESX',      -- ESX, QBCORE. --> Use BLOCK CAPS.
+    Framework = '',      -- ESX, QBCORE. --> Use BLOCK CAPS.
     AllowedJobs = {         -- Add jobs that are able to give bills.
         police = { maxBill = 10000 },
         ambulance = { maxBill = 10000 },
