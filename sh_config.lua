@@ -1,6 +1,6 @@
 Config = {
-    Debug = true,
-    Framework = 'ESX',      -- ESX, QBCore, Ox
+    Debug = false,
+    Framework = 'ESX',      -- ESX, QBCORE. --> Use BLOCK CAPS.
     AllowedJobs = {         -- Add jobs that are able to give bills.
         police = { maxBill = 10000 },
         ambulance = { maxBill = 10000 },
@@ -9,7 +9,7 @@ Config = {
     Keybind = nil,          -- nil to disable. Example: 'k'
     Command = 'billingmenu',-- nil to disable.
     Days = 7,               -- How many days (IRL) you have to pay for the bills before they're automatically paid off.
-                            -- Set to -1 to disable.
+                            -- Set to 0 or less to disable.
     WithdrawAccount = 'bank'-- Account to withdraw the money from.
 }
 

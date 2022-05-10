@@ -1,7 +1,7 @@
 b = { Framework = nil }
 function b:GetFramework()
     if (self.Framework) then return end
-    Config.Framework = Config.Framework:upper()
+    Config.Framework = Config.Framework:upper() -- Makes framework checks use ALL CAPS. To remove case-sensitivity issues.
     if (Config.Framework == "ESX") then
         self.PlayerLoaded = 'esx:playerLoaded'
         TriggerEvent("esx:getSharedObject", function(obj) self.Framework = obj end)
@@ -22,7 +22,7 @@ function b:FrameworkEventHandlers()
 end
 
 function b.PlayerLoadedFunc(source, player)
-    if (Config.Days == -1) then return end
+    if (Config.Days < 1) then return end
     local currentTime = os.time()
     Citizen.Wait(10000)
 
@@ -55,6 +55,7 @@ function b:GetPlayerFromId(id)
 end
 
 function b.RemoveAccountMoney(player, amount)
+    if (not player) then return end
     if (Config.Framework == "ESX") then
         player.removeAccountMoney(Config.WithdrawAccount, amount)
         return true
@@ -67,7 +68,8 @@ function b.RemoveAccountMoney(player, amount)
     return false
 end
 
-function b.GetJob(player)
+function b.GetPlayerJob(player)
+    if (not player) then return end
     if (Config.Framework == "ESX") then
         return player.job.name
     elseif (Config.Framework == "QBCORE") then
@@ -77,11 +79,34 @@ function b.GetJob(player)
     end
 end
 
-function b.GetIdentifier(player)
+function b:GetPlayerIdentifier(player)
+    if (not player) then return end
     if (Config.Framework == "ESX") then
-        return player.getIdentifier()
+        return player.identifier
     elseif (Config.Framework == "QBCORE") then
-        return player.Functions.GetIdentifier()
+        return self['Framework'].Functions.GetIdentifier(player.PlayerData.source)
+    else
+        -- Add in your framework related code here.
+    end
+end
+
+function b.GetPlayerServerId(player)
+    if (not player) then return end
+    if (Config.Framework == "ESX") then
+        return player.playerId
+    elseif (Config.Framework == "QBCORE") then
+        return player.PlayerData.source
+    else
+        -- Add in your framework related code here.
+    end
+end
+
+function b.GetPlayerName(player)
+    if (not player) then return end
+    if (Config.Framework == "ESX") then
+        return player.name
+    elseif (Config.Framework == "QBCORE") then
+        return player.PlayerData.charinfo.firstname + " " + player.PlayerData.charinfo.lastname
     else
         -- Add in your framework related code here.
     end

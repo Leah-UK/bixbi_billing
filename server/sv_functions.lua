@@ -29,18 +29,18 @@ AddEventHandler('bixbi_billing:SendBill', function(data) -- targetId, reason, am
     if ((not source or source == '') and data.playerId) then source = data.playerId end
 
     local player, target = b:GetPlayerFromId(source), b:GetPlayerFromId(data.targetId)
-    -- local target = b:GetPlayerFromId(data.targetId)
+    if (not player or not target) then return end
 
-    if onTimer[player.playerId] and onTimer[player.playerId] > GetGameTimer() then
-        local timeLeft = (onTimer[player.playerId] - GetGameTimer()) / 1000
+    if onTimer[source] and onTimer[source] > GetGameTimer() then
+        local timeLeft = (onTimer[source] - GetGameTimer()) / 1000
         TriggerClientEvent('bixbi_billing:Notify', source, 'Send Bill', 'Please wait ' .. tostring(timeLeft) .. ' seconds before sending another bill', 'error')
         return
     end
 
-    local playerJob = b.GetJob(player)
-    local playerIdentifier = b.GetIdentifier(player)
+    local playerJob, playerIdentifier = b.GetPlayerJob(player), b.GetPlayerIdentifier(player)
+    
     if (Config.AllowedJobs[playerJob] == nil) then
-        print(playerIdentifier .. ' (' .. player.playerId .. ') has tried to send a bill.')
+        print(playerIdentifier .. ' (' .. source .. ') has tried to send a bill.')
         TriggerClientEvent('bixbi_billing:Notify', source, 'Send Bill', 'You are unable to do this', 'error')
         return
     end
@@ -51,11 +51,11 @@ AddEventHandler('bixbi_billing:SendBill', function(data) -- targetId, reason, am
     end
     
     MySQL.insert('INSERT INTO bixbi_billing (sender, senderJob, reason, target, amount, time) VALUES (?, ?, ?, ?, ?, ?)', {
-        playerIdentifier, playerJob, data.reason, target.identifier, data.amount, os.time() },
+        playerIdentifier, playerJob, data.reason, b.GetPlayerIdentifier(target), data.amount, os.time() },
     function(rowid)
-        TriggerClientEvent('bixbi_billing:Notify', data.targetId, 'Bill', 'You have received a bill from ' .. player.name .. ' with the value of $' .. data.amount, 'error')
+        TriggerClientEvent('bixbi_billing:Notify', data.targetId, 'Bill', 'You have received a bill from ' .. b.GetPlayerName(player) .. ' with the value of $' .. data.amount, 'error')
     end)
 
-    TriggerClientEvent('bixbi_billing:Notify', source, 'Send Bill', 'You have sent a bill of $' .. data.amount .. ' to ' .. target.name, 'success')
-    onTimer[player.playerId] = GetGameTimer() + (10 * 1000)
+    TriggerClientEvent('bixbi_billing:Notify', source, 'Send Bill', 'You have sent a bill of $' .. data.amount .. ' to ' .. b.GetPlayerName(target), 'success')
+    onTimer[source] = GetGameTimer() + (10 * 1000)
 end)
