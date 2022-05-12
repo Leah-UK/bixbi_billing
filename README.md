@@ -1,4 +1,4 @@
-### <p align='center'>[Organisation](https://github.com/Bixbi-FiveM) | [Support Me Here](https://ko-fi.com/bixbi) | [FiveM Profile](https://forum.cfx.re/u/Leah_UK/summary)</p>
+### <p align='center'>[Support Me Here](https://ko-fi.com/bixbi) | [FiveM Profile](https://forum.cfx.re/u/Leah_UK/summary)</p>
 ------
 
 # Information
